@@ -24,6 +24,10 @@ let UserSchema = new Schema(
         password:{
             type:String, 
             required:[true, 'Password cannot be left blank']
+        },
+        isVerified:{
+            type:Boolean,
+            default:false
         }
     }
 )
