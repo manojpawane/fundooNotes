@@ -9,13 +9,7 @@ const bcrypt = require('bcrypt-nodejs');
  * @param  {} res
  */
 exports.user_create =async function(req, res){
-    let user = new User(
-        {
-            name:req.body.name,
-            email:req.body.email,
-            password:req.body.password
-        }
-    );
+   
 
     /// checks if user exist
     var userExist = await User.findOne({
@@ -25,6 +19,14 @@ exports.user_create =async function(req, res){
     try {
         /// checks if user exist if not then encrypt the password and add the user into database
         if(!userExist){
+            let user = new User(
+                {
+                    name:req.body.name,
+                    email:req.body.email,
+                    password:req.body.password
+                }
+            );
+            
            await bcrypt.hash(req.body.password, bcrypt.genSaltSync(10), null,async function(err, hash){
                 if(err){
                     throw err
@@ -34,11 +36,11 @@ exports.user_create =async function(req, res){
                 }
                 /// user call to create new user
                 let userRegisteredResponse = await User.create(user);
-                res.send({status: userRegisteredResponse.name + ' ' + 'registered'})
+                res.send({status: userRegistered.Response.name + ' ' + 'registered'})
             })
         }
         else{
-            res.send('User already exists. ');
+            res.status(400).send({msg:'The email address you entered is already associated with another account.'})
         }
     } catch (error) {
         res.send(error);
@@ -50,7 +52,7 @@ exports.user_create =async function(req, res){
  * @param  {} req
  * @param  {} res
  */
-exports.user_login = async function(req, res){
+exports.user_login = async function(req, res, next){
     try {
         var userExist = await User.findOne(
             {
@@ -61,7 +63,9 @@ exports.user_login = async function(req, res){
         if(userExist){
             /// if exist just match encrypted password which we get from data with enter password
             if(bcrypt.compareSync(req.body.password, userExist.password)){
-                console.log(userExist.password);
+                if(!userExist.isVerified){
+                    return res.status(401).send({type:'not-verified', msg:'Your account has not been verified.'});
+                }
                 const payload = {
                     _id:userExist._id,
                     email:userExist.email,
@@ -75,9 +79,12 @@ exports.user_login = async function(req, res){
                 
                 res.send(token);
             }
+            else{
+                return res.status(401).send({msg:'Invalid email or password.'});
+            }
         }
         else{
-            res.send('User does not exist');
+            return res.status(401).send({msg:'The email address '+ req.body.email + 'is not associated with any account. Double-check your email address and try again.'})
         }    
     } catch (error) {
         res.send(error)

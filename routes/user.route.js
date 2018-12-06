@@ -21,4 +21,14 @@ router.post('/create', user_controller.user_create);
  */
 router.post('/login', user_controller.userlogin);
 
+/**  
+ * route for token confirmation
+ */
+router.post('/confirmation', user_controller.confirmationPost);
+
+/**  
+ * route to resend a new confirmation token
+ */
+router.post('/resend', user_controller.resendTokenPost);
+
 module.exports = router;
