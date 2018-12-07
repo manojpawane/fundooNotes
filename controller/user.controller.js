@@ -1,4 +1,5 @@
 const userService = require('../services/user.service');
+const { check, validationResult } = require('express-validator/check');
 const assert = require('assert');
 
 /**
