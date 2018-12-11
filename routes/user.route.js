@@ -1,11 +1,16 @@
 const express = require('express');
-const router = express.Router();
 const cors = require('cors');
+//var bodyParser = require('body-parser');
 const user_controller = require('../controller/user.controller');
+expressValidator = require('express-validator');
+const router = express.Router();
 
 router.use(cors());
 
 process.env.SECRET_KEY = 'secret';
+
+//router.use(express.bodyParser());
+router.use(expressValidator()); 
 
 /**
  * route to call controller for user registration

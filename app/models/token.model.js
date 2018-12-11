@@ -8,3 +8,6 @@ var tokenSchema = new Schema(
         createdAt :{type:Date, required:true, default:Date.now, expires: 43200}
     }
 )
+
+/// Export the models
+module.exports = mongoose.model('Token', tokenSchema);
