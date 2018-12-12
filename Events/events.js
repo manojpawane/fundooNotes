@@ -6,41 +6,32 @@ var nodemailer = require('nodemailer');
 var sendEmail = function (subject, user, text) {
     return new Promise(async function(resolve, reject){
         try {
-            console.log('Test events');
             var transporter = await nodemailer.createTransport({
-                host: 'smtp.mail.com',
-                port: 465,
-                secure: true,
+                service:'gmail',
+                
+               // secure: true,
                 auth: {
-                    user: 'fundoonote@mail.com',
-                    pass: 'Manoj@1234'
+                    user: 'manojdevinvent@gmail.com',
+                    pass: 'kalpana@1993'
                 }
             });
 
-            var mailOptions = await {
-                from: 'fundoonote@mail.com',
+            var mailOptions =  {
+                from: 'manojdevinvent@gmail.com',
                 to: user.email,
                 subject: subject,
                 text: text,
             }
-            console.log(user.email);
-          transporter.sendMail(mailOptions, function (error, info) {
-              console.log('111111');
+            await transporter.sendMail(mailOptions, async function (error, info) {
                 if (error) {
-                    console.log('inside error')
-                    console.log(error);
-                    resolve(error.message) 
+                    return await resolve(error.message) 
                 }
                 else {
-                    console.log(info.response);
-                    console.log('testi');
-                    resolve('Verfication mail has been sent to ' + user.email + '.');
+                    return resolve('Verfication mail has been sent to ' + user.email + '.');
                 }
             });
         } catch (error) {
-            console.log('inside catch block');
-            console.log(error);
-            reject(error)
+            return reject(error)
         }
     })
         

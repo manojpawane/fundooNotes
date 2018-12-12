@@ -2,8 +2,11 @@
   "name": "fundoo-notes",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "prod:start": "npm start NODE_ENV=production",
+    "dev:start": "npm start NODE_ENV=development",
+    "dev:test": "test",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

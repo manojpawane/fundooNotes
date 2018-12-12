@@ -20,16 +20,12 @@ exports.user_create = function(req, res, next){
     // checks for validation errors
     var errors = req.validationErrors();
     if(errors){
-        console.log('Test 2');
         return res.status(400).send(errors);
     }
     else{
-        console.log('Test 1');
         userService.user_create(req, res);
     }    
     } catch (error) {
-        console.log(error);
-        console.log('testing catch block');
         res.send(error)
     }
 }
