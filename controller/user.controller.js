@@ -16,7 +16,6 @@ exports.user_create = function(req, res, next){
     req.assert('password','Password must be at least 4 characters long').len(4);
     req.sanitize('email').normalizeEmail({remove_dots:false});
 
-    console.log('Test 1');
     // checks for validation errors
     var errors = req.validationErrors();
     if(errors){
