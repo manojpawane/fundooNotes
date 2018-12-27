@@ -103,6 +103,10 @@ exports.user_login = async function (req, res) {
     }
 }
 
+exports.confirmtoken = function(req, res){
+    console.log(req.params.token);
+    res.send(req.params.token);
+}
 
 /**
 /**

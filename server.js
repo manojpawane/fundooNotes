@@ -1,4 +1,5 @@
 var express = require('express');
+const swaggerDoc = require('./swaggerDoc');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var dataBase = require('./config/database.config');
@@ -7,6 +8,7 @@ var expressValidator = require('express-validator');
 
 /// initializing express app
 const app = express();
+
 let port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
@@ -16,6 +18,7 @@ app.use(
         extended: false
     })
 )
+swaggerDoc(app);
 app.use('/user',user);
 
     app.listen(port, ()=>{
@@ -24,3 +27,4 @@ app.use('/user',user);
 
     dataBase.mongoose;
 
+    
