@@ -11,18 +11,37 @@ process.env.SECRET_KEY = 'secret';
 router.use(expressValidator()); 
 
 /**
- * @swagger
  * /create:
  *    post:
- *      description: This should register user
- */
+ *     description: create a user
+ *     produces:
+ *       - application/json
+ *  requestBody:
+ *  $ref: '#/models/user.model/PetBody'
+*/
 router.post('/create', user_controller.user_create);
 
 /**
  * @swagger
  * /login:
  *    post:
- *      description: This should login user
+ *     description: Login to the application
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: email
+ *         description: Email to use for login.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: password
+ *         description: User's password.
+ *         in: formData
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: login
  */
 router.post('/login', user_controller.userlogin);
 
