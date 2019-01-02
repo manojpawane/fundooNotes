@@ -24,7 +24,7 @@ router.use(expressValidator());
  */
 /**
  * @swagger
- * /create:
+ * user/create:
  *   post:
  *     tags:
  *       - Create
