@@ -73,17 +73,16 @@ router.post('/login', user_controller.userlogin);
 /**  
  * route for token confirmation
  */
-// router.post('/confirmation', user_controller.confirmationPost);
+ router.post('/confirmation', user_controller.confirmationPost);
 
 /**
  * Route to check whether token is present
  */
-// router.get('/confirmation', user_controller.confirmtoken);
+ router.get('/confirmation/:token', user_controller.confirmtoken)
 
-// router.get('/confirmation:token', user_controller.confirmtoken)
 /**  
  * route to resend a new confirmation token
  */
-// router.post('/resend', user_controller.resendTokenPost);
+ router.post('/resend', user_controller.resendTokenPost);
 
 module.exports = router;

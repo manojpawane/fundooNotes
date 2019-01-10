@@ -44,7 +44,7 @@ exports.user_create = async function (req, res) {
                     }
                     else {
                         let subject = 'Account verification Token';
-                        let text = 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + token.token + '\n';
+                        let text = 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/confirmation\/' + token.token + '\n';
                         eventEmitter.emit('sendEmail', subject, user, text)
                     }
                 })
@@ -103,9 +103,24 @@ exports.user_login = async function (req, res) {
     }
 }
 
-exports.confirmtoken = function(req, res){
-    console.log(req.params.token);
-    res.send(req.params.token);
+/**  
+ * confirm token checks whether token is present or not
+*/
+exports.confirmtoken = async function (req, res) {
+    try {
+        var tokenExist = await Token.findOne({
+            token: req.params.token
+        }
+        )
+        if (tokenExist) {
+            res.send(tokenExist.token)
+        }
+        else {
+            res.send(false);
+        }
+    } catch (error) {
+        res.send(error)
+    }
 }
 
 /**
