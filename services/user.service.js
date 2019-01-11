@@ -147,6 +147,7 @@ exports.confirmationPost = function (req, res) {
      * Checks whether token is present with respective to user
      */
     Token.findOne({ token: req.body.token }, function (err, token) {
+        console.log('testing 1');
         if (!token) {
             return res.status(400).send({ type: 'not-verified', msg: 'We are unable to find valid token, your token may have been expired.' })
         }

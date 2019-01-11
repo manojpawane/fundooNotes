@@ -57,6 +57,7 @@ exports.userlogin  = function(req, res, next){
  * Confirmation of token with link
  */
 exports.confirmationPost = function(req, res, next){
+    console.log('testing');
     userService.confirmationPost(req, res, next);
 }
 
