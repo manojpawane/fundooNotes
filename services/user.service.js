@@ -206,3 +206,83 @@ exports.resendTokenPost = function (req, res) {
         });
     });
 }
+
+/**  
+ * Forget password checks if user exits and sends the verification mail to valid user email id
+*/
+exports.forgetPassword = async function (req, res) {
+    /// checks if user exist
+    var userExist = await User.findOne({
+        email: req.body.email
+    })
+
+    try {
+        /// checks if user exist if not then encrypt the password and add the user into database
+        if (userExist) {
+            let user = new User(
+                {
+                    email: req.body.email,
+                }
+            );
+            /// creates a token so we can verify
+            var token = await new Token({ _userId: userExist._id, token: crypto.randomBytes(16).toString('hex') });
+            await token.save(async function (err) {
+                if (err) {
+                    return res.status(500).send({ msg: err.message });
+                }
+                else {
+                    let subject = 'Password reset link';
+                    let text = 'Hello,\n\n' + 'Please reset your password by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/forget\/' + token.token + '\n';
+                    eventEmitter.emit('sendEmail', subject, user, text)
+                }
+            })
+            res.send(true)
+        }
+        else {
+            res.status(400).send({ msg: 'The email address you entered is not register with us.' })
+        }
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+
+exports.updatePassword = function (req, res) {
+    req.assert('email', 'Email is not valid').isEmail();
+    req.assert('email', 'Email cannot be empty.').notEmpty();
+    req.assert('token', 'Token cannot be blank.').notEmpty();
+    req.sanitize('email').normalizeEmail({ remove_dots: false });
+
+    //Check for validation errors
+    var errors = req.validationErrors();
+    if (errors) {
+        return res.status(400).send(errors);
+    }
+
+    /** 
+     * Checks whether token is present with respective to user
+     */
+    Token.findOne({ token: req.body.token }, function (err, token) {
+        if (!token) {
+            return res.status(400).send({ type: 'not-verified', msg: 'your link has been expired' })
+        }
+
+        User.findOne({
+            _id: token._userId
+        }, function (err, user) {
+            if (!user) {
+                return res.status(400).send({ msg: 'We are unable to find the user for this Link' })
+            }
+
+            await bcrypt.hash(req.body.password, bcrypt.genSaltSync(10), null, async function (err, hash) {
+                
+            })
+            user.save(function (err) {
+                if (err) {
+                    return res.status(500).send({ msg: err.message });
+                }
+                return res.status(200).send("Account has been verified please login.");
+            })
+        })
+    })
+}
