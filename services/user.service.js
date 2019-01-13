@@ -226,13 +226,15 @@ exports.forgetPassword = async function (req, res) {
             );
             /// creates a token so we can verify
             var token = await new Token({ _userId: userExist._id, token: crypto.randomBytes(16).toString('hex') });
+            /// saves a token for 24 hours
             await token.save(async function (err) {
                 if (err) {
                     return res.status(500).send({ msg: err.message });
                 }
                 else {
                     let subject = 'Password reset link';
-                    let text = 'Hello,\n\n' + 'Please reset your password by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/forget\/' + token.token + '\n';
+                    let text = 'Hello,\n\n' + 'Please reset your password by clicking the link: \nhttp:\/\/' + 'localhost:3000' + '\/updatePassword\/' + token.token + '\n';
+                    //// event is fired for sending a mail
                     eventEmitter.emit('sendEmail', subject, user, text)
                 }
             })
@@ -247,18 +249,10 @@ exports.forgetPassword = async function (req, res) {
 }
 
 
+/** 
+ * Updates the new password
+*/
 exports.updatePassword = function (req, res) {
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('email', 'Email cannot be empty.').notEmpty();
-    req.assert('token', 'Token cannot be blank.').notEmpty();
-    req.sanitize('email').normalizeEmail({ remove_dots: false });
-
-    //Check for validation errors
-    var errors = req.validationErrors();
-    if (errors) {
-        return res.status(400).send(errors);
-    }
-
     /** 
      * Checks whether token is present with respective to user
      */
@@ -267,21 +261,35 @@ exports.updatePassword = function (req, res) {
             return res.status(400).send({ type: 'not-verified', msg: 'your link has been expired' })
         }
 
+        /** 
+         * find the user with the user id in token
+        */
         User.findOne({
             _id: token._userId
-        }, function (err, user) {
+        },async function (err, user) {
             if (!user) {
                 return res.status(400).send({ msg: 'We are unable to find the user for this Link' })
             }
 
+            /** 
+             * encrypt the password which need to set
+            */
             await bcrypt.hash(req.body.password, bcrypt.genSaltSync(10), null, async function (err, hash) {
-                
+                if(err){
+                    res.send(err)
+                }
+                else{
+                    user.password = hash
+                }
             })
+            /** 
+             * saves the user
+            */
             user.save(function (err) {
                 if (err) {
                     return res.status(500).send({ msg: err.message });
                 }
-                return res.status(200).send("Account has been verified please login.");
+                return res.status(200).send("Password has reset successfully.");
             })
         })
     })

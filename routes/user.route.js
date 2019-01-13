@@ -85,4 +85,14 @@ router.post('/login', user_controller.userlogin);
  */
  router.post('/resend', user_controller.resendTokenPost);
 
+ /** 
+  * route to call the controller which is use to send the email for resting password
+ */
+ router.post('/forgetpassword', user_controller.forgetPassword);
+
+ /** 
+  * route to call the controller which is use to update the new password
+ */
+ router.post('/updatepassword', user_controller.updatePassword);
+
 module.exports = router;
