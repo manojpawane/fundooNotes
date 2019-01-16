@@ -25,7 +25,6 @@ class LabelNote {
                         name:req.body.name
                     })
                     let labelResponse = await Label.create(label);
-                    console.log(labelResponse);
                     resolve(res.send(labelResponse))
                 }
             } catch (error) {
