@@ -132,17 +132,6 @@ exports.confirmtoken = async function (req, res) {
  * @returns
  */
 exports.confirmationPost = function (req, res) {
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('email', 'Email cannot be empty.').notEmpty();
-    req.assert('token', 'Token cannot be blank.').notEmpty();
-    req.sanitize('email').normalizeEmail({ remove_dots: false });
-
-    //Check for validation errors
-    var errors = req.validationErrors();
-    if (errors) {
-        return res.status(400).send(errors);
-    }
-
     /** 
      * Checks whether token is present with respective to user
      */
@@ -178,15 +167,6 @@ exports.confirmationPost = function (req, res) {
  * Resend token logic
  */
 exports.resendTokenPost = function (req, res) {
-    req.assert('email', 'Email is not verified.').isEmail();
-    req.assert('email', 'Email is not empty.').notEmpty();
-    req.sanitize('email').normalizeEmail({ remove_dots: false });
-
-    //check for validation error
-    var errors = req.validationErrors();
-    if (errors) {
-        return res.status(400).send(errors);
-    }
     User.findOne({ email: req.body.email }, function (err, user) {
         if (!user) return res.status(400).send({ msg: 'We were unable to find a user with that email.' });
         if (user.isVerified) return res.status(400).send({ msg: 'This account has already been verified. Please log in.' });

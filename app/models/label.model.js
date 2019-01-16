@@ -6,7 +6,8 @@ let LabelSchema = new Schema({
         type:String,
         require:true,
         max:100
-    }
+    },
+    _userId : {type:mongoose.Schema.Types.ObjectId, required:true, ref:'User'}
 })
 
 module.exports = mongoose.model('Label', LabelSchema);

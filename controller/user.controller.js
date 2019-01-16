@@ -1,5 +1,4 @@
 const userService = require('../services/user.service');
-var expressValidator = require('express-validator')
 
 
 /**
@@ -61,7 +60,19 @@ exports.userlogin = function (req, res, next) {
  * Confirmation of token with link
  */
 exports.confirmationPost = function (req, res, next) {
-    userService.confirmationPost(req, res, next);
+    req.assert('email', 'Email is not valid').isEmail();
+    req.assert('email', 'Email cannot be empty.').notEmpty();
+    req.assert('token', 'Token cannot be blank.').notEmpty();
+    req.sanitize('email').normalizeEmail({ remove_dots: false });
+
+    //Check for validation errors
+    var errors = req.validationErrors();
+    if (errors) {
+        return res.status(400).send(errors);
+    }
+    else{
+        userService.confirmationPost(req, res, next);
+    }
 }
 
 exports.confirmtoken = function (req, res, next) {
@@ -73,7 +84,18 @@ exports.confirmtoken = function (req, res, next) {
  * Resending token request if token is expired or user can request
  */
 exports.resendTokenPost = function (req, res, next) {
-    userService.resendTokenPost(req, res, next);
+    req.assert('email', 'Email is not verified.').isEmail();
+    req.assert('email', 'Email is not empty.').notEmpty();
+    req.sanitize('email').normalizeEmail({ remove_dots: false });
+
+    //check for validation error
+    var errors = req.validationErrors();
+    if (errors) {
+        return res.status(400).send(errors);
+    }
+    else{
+        userService.resendTokenPost(req, res, next);
+    }
 }
 
 /** 

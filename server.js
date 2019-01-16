@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var dataBase = require('./config/database.config');
 var user = require('./routes/user.route');
+var label = require('./routes/Label.route');
 var expressValidator = require('express-validator');
 
 /// initializing express app
@@ -22,7 +23,7 @@ app.use(
 )
 swaggerDoc(app);
 app.use('/user',user);
-
+app.use('/label',label);
     app.listen(port, ()=>{
         console.log('Server is running at the port: '+port);
     })
