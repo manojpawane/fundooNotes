@@ -9,7 +9,7 @@ class Label_Controller {
         try {
             var labelService = new LabelNote();
             req.assert('name', 'Name cannot be blank.').notEmpty();
-            req.assert('token','Token cannot be empty').notEmpty();
+            req.assert('userId','User Id not found').notEmpty();
         
             var errors = req.validationErrors();
             if (errors) {

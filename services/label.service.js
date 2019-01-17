@@ -1,4 +1,3 @@
-"use strict";
 const Label = require('../app/models/label.model')
 
 class LabelNote {
@@ -7,22 +6,19 @@ class LabelNote {
     }
 
     AddLabelForUser(req, res){
-        console.log('tesiting in add label method');
         return new Promise(async function(resolve, reject){
             try {
-                var labelNote = new LabelNote();
-                var iddata = labelNote.parseJWT(req.body.token)
-                console.log(iddata)
                 var labelExist = await Label.findOne({
                     name:req.body.name,
-                    _userId:req.body.id
+                    _userId:req.body.userId
                 })
                 if(labelExist){
                     resolve(res.status(400).send({msg:'The label name already exists'}));
                 }
                 else{
                     var label = new Label({
-                        name:req.body.name
+                        name:req.body.name,
+                        _userId:req.body.userId
                     })
                     let labelResponse = await Label.create(label);
                     resolve(res.send(labelResponse))
