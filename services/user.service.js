@@ -164,6 +164,26 @@ exports.confirmationPost = function (req, res) {
 }
 
 /** 
+ * gets the user profile
+*/
+exports.getUserProfile = function(req, res){
+    try {
+        User.findById({
+            _id:req.params.id
+        }, function(err, user){
+            if(err){
+                res.status(401).send('User not found');
+            }
+            else{
+                res.send(user);
+            }
+        })    
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+/** 
  * Resend token logic
  */
 exports.resendTokenPost = function (req, res) {

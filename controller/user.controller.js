@@ -98,6 +98,24 @@ exports.resendTokenPost = function (req, res, next) {
 }
 
 /** 
+ * gets the user profile
+*/
+exports.getUserProfile = function(req, res, next){
+    try {
+        req.assert('id','Invalid user.').notEmpty();
+        let errors = req.validationErrors();
+        if(errors){
+            res.status(400).send(errors);
+        }
+        else{
+            userService.getUserProfile(req, res, next);
+        }        
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+/** 
  * calls the service to send email to user with link for update the password
 */
 exports.forgetPassword = function (req, res, next) {

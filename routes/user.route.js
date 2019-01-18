@@ -95,4 +95,5 @@ router.post('/login', user_controller.userlogin);
  */
  router.post('/updatepassword', user_controller.updatePassword);
 
+ router.get('/get/:id',user_controller.getUserProfile);
 module.exports = router;
