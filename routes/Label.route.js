@@ -9,7 +9,7 @@ router.use(expressValidator());
 
 var label_controller = new Label_Controller.Label_Controller();
 router.post('/addlabel', label_controller.AddLabel)
-router.get('/getLabel/:Id',label_controller.getLabel)
+router.get('/getLabel/:userId',label_controller.getLabel)
 router.post('/updateLabel',label_controller.updateLabel);
 router.delete('/deleteLabel/:Id',label_controller.deleteLabel);
 
