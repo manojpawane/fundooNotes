@@ -28,7 +28,7 @@ router.use(expressValidator());
  *   post:
  *     tags:
  *       - Create
- *     description: Creates a new user
+ *     description: Register new user
  *     produces:
  *       - application/json
  *     parameters:
@@ -40,7 +40,7 @@ router.use(expressValidator());
  *           $ref: '#/definitions/User'
  *     responses:
  *       200:
- *         description: Successfully created
+ *         description: Successfully created new user
  */
 router.post('/create', user_controller.user_create);
 
