@@ -22,22 +22,33 @@ let NoteSchema = new Schema(
             type:Boolean,
             default:false
         },
-        createdBy : {type:mongoose.Schema.Types.ObjectId, required:true, ref:'User'},
+        createdBy : {type:mongoose.Schema.Types.ObjectId, ref:'User', default:null},
         createdOn:{
-            type:Date
+            type: Date,
+            default:null
+        },
+        modifyBy:{type:mongoose.Schema.Types.ObjectId, ref:'User', default:null},
+        
+        modifyOn:{
+            type: Date,
+            default:null
         },
         userId : {type:mongoose.Schema.Types.ObjectId, required:true, ref:'User'},
         reminder:{
-            type:Date
+            type: Date,
+            default:null
         },
         color:{
-            type:String
+            type:String,
+            default:null
         },
         photo:{
-            type:String
+            type:String,
+            default:null
         },
         label:{
-            type:mongoose.Schema.Types.ObjectId, ref:'Label'
+            type:mongoose.Schema.Types.ObjectId, ref:'Label',
+            default:null
         }
     }
 )

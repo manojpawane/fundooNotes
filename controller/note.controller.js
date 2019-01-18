@@ -1,15 +1,27 @@
 const NoteService = require('../services/note.service')
 
+/**
+ *
+ *
+ * @class NoteController
+ */
 class NoteController{
     constructor(){
     }
+    /**
+     * add notes
+     *
+     * @param {*} req
+     * @param {*} res
+     * @memberof NoteController
+     */
     AddNote(req, res){
             try {
                 var noteService = new NoteService();
                 req.assert('title', 'Title cannot be empty').notEmpty();
                 req.assert('content', 'Content cannot be empty').notEmpty();
                 req.assert('userId', 'User authentication failed').notEmpty()
-                var errors = req.validationErrors();
+                let errors = req.validationErrors();
                 if(errors){
                     res.status(400).send(errors);
                 }
@@ -17,17 +29,26 @@ class NoteController{
                     noteService.AddNoteSer(req, res);
                 }
             } catch (error) {
-                res.send(error);
+                throw new Error(error);
             }
     }
 
+    /**
+     *update notes
+     *
+     * @param {*} req
+     * @param {*} res
+     * @memberof NoteController
+     */
     updateNote(req, res){
         try {
+            console.log('test');
             var noteService = new NoteService();
             req.assert('title', 'Title cannot be empty').notEmpty();
             req.assert('content', 'Content cannot be empty').notEmpty();
-            req.assert('userId', 'User authentication failed').notEmpty()
-            var errors = req.validationErrors();
+            req.assert('userId', 'User authentication failed').notEmpty();
+            req.assert('id','Invalid card number').notEmpty();
+            let errors = req.validationErrors();
             if(errors){
                 res.status(400).send(errors);
             }
@@ -35,30 +56,46 @@ class NoteController{
                 noteService.updateNote(req, res);
             }
         } catch (error) {
-            res.send(error);
+            throw new Error(error)
         }
     }
 
+    /**
+     *get notes by id
+     *
+     * @param {*} req
+     * @param {*} res
+     * @memberof NoteController
+     */
     getNoteById(req, res){
         try {
+            console.log(req.params.Id);
             var noteservice = new NoteService();
-            req.assert('id', 'Note cannot be empty').notEmpty();
+            req.assert('Id', 'Note cannot be empty').notEmpty();
+            let errors = req.validationErrors();
             if(errors){
                 res.status(400).send(errors);
             }
             else{
-                noteservice.getNotebyId(res, res);
+                noteservice.getNotebyId(req, res);
             }
         } catch (error) {
-            res.send(error);
+            throw new Error(error);
         }
     }
 
+    /**
+     *get  notes by user id
+     *
+     * @param {*} req
+     * @param {*} res
+     * @memberof NoteController
+     */
     getNote(req, res){
         try {
             var noteService = new NoteService();
             req.assert('userId', 'user Id cannot be empty').notEmpty();
-            var errors = req.validationErrors();
+            let errors = req.validationErrors();
             if(errors){
                 res.status(400).send(errors);
             }
@@ -66,7 +103,30 @@ class NoteController{
                 noteService.getNote(req, res);
             }
         } catch (error) {
-            res.send(error);
+            throw new Error(error);
+        }
+    }
+
+    /**
+     * delete notes
+     *
+     * @param {*} req
+     * @param {*} res
+     * @memberof NoteController
+     */
+    deleteNote(req, res){
+        try {
+            var noteService = new NoteService();
+            req.assert('Id','Invalid request').notEmpty();
+            let errors = req.validationErrors();
+            if(errors){
+                res.status(400).send(errors);
+            }
+            else{
+                noteService.deleteNote(req, res);
+            }
+        } catch (error) {
+            throw new Error(error)
         }
     }
 }

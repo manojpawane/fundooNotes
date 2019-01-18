@@ -76,7 +76,6 @@ exports.confirmationPost = function (req, res, next) {
 }
 
 exports.confirmtoken = function (req, res, next) {
-    console.log('tested');
     userService.confirmtoken(req, res, next);
 }
 
