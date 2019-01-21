@@ -40,13 +40,14 @@ exports.userlogin = function (req, res, next) {
         req.assert('email', 'Email cannot be blank.').notEmpty();
         req.assert('password', 'Password cannot be blank.').notEmpty();
         req.sanitize('email').normalizeEmail({ remove_dots: false });
-
+        console.log('test 4');
         // check for validation errors
         var errors = req.validationErrors();
         if (errors) {
             return res.status(400).send(errors);
         }
         else {
+            console.log('test 3');
             userService.user_login(req, res, next);
         }
     } catch (error) {
