@@ -42,7 +42,6 @@ class NoteController{
      */
     updateNote(req, res){
         try {
-            console.log('test');
             var noteService = new NoteService();
             req.assert('title', 'Title cannot be empty').notEmpty();
             req.assert('content', 'Content cannot be empty').notEmpty();
@@ -69,7 +68,6 @@ class NoteController{
      */
     getNoteById(req, res){
         try {
-            console.log(req.params.Id);
             var noteservice = new NoteService();
             req.assert('Id', 'Note cannot be empty').notEmpty();
             let errors = req.validationErrors();
