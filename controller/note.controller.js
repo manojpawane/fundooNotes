@@ -43,10 +43,11 @@ class NoteController{
     updateNote(req, res){
         try {
             var noteService = new NoteService();
+            console.log(req.body);
             req.assert('title', 'Title cannot be empty').notEmpty();
             req.assert('content', 'Content cannot be empty').notEmpty();
             req.assert('userId', 'User authentication failed').notEmpty();
-            req.assert('id','Invalid card number').notEmpty();
+            req.assert('_id','Invalid card number').notEmpty();
             let errors = req.validationErrors();
             if(errors){
                 res.status(400).send(errors);

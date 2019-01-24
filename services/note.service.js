@@ -47,7 +47,7 @@ class NoteService {
     async updateNote(req, res) {
         try {
             var noteExist = await Note.findOne({
-                _id: req.body.id
+                _id: req.body._id
             })
             if (noteExist) {
                 noteExist.title = req.body.title,
