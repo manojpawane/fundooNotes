@@ -50,7 +50,7 @@ class NoteController{
             req.assert('_id','Invalid card number').notEmpty();
             let errors = req.validationErrors();
             if(errors){
-                res.status(400).send(errors);
+                throw new Error(errors[0].msg)     
             }
             else{
                 noteService.updateNote(req, res);
