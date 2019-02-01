@@ -46,10 +46,10 @@ let NoteSchema = new Schema(
             type:String,
             default:null
         },
-        label:{
+        label:[{
             type:mongoose.Schema.Types.ObjectId, ref:'Label',
             default:null
-        }
+        }]
     }
 )
 
