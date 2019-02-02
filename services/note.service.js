@@ -59,14 +59,16 @@ class NoteService {
                     noteExist.color = req.body.color,
                     noteExist.label = req.body.label
 
-                await noteExist.save(function (err) {
+            let data =  await noteExist.save(async function (err) {
+                console.log('return response: '+data);
                     if (err) {
-                        console.log('test');
-
                         return res.status(500).send({ msg: err.message });
                     }
                     else {
-                        return res.status(200).send("updated successfully.");
+                        var note = await Note.findOne({
+                            _id: req.body._id
+                        })
+                        return res.status(200).send(note);
                     }
                 })
             }
