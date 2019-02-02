@@ -60,7 +60,6 @@ class NoteService {
                     noteExist.label = req.body.label
 
             let data =  await noteExist.save(async function (err) {
-                console.log('return response: '+data);
                     if (err) {
                         return res.status(500).send({ msg: err.message });
                     }
